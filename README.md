@@ -1,4 +1,3 @@
----
 
 ```markdown
 # 🧠 KDD RAG Project
