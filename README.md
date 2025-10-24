@@ -222,3 +222,259 @@ University of Jeddah – Artificial Intelligence Major
 🌐 GitHub: [github.com/yourusername]
 💼 LinkedIn: [linkedin.com/in/bushradajam]
 
+
+
+
+
+
+
+
+
+
+
+# 🧠 KDD RAG Project
+
+This project implements a **Retrieval-Augmented Generation (RAG)** pipeline for **KDD Kuwait**, enabling users to ask natural questions about KDD products and career opportunities.  
+It integrates **web scraping**, **data cleaning**, **semantic search (FAISS)**, and a **local language model** to generate clear and contextually accurate answers.
+
+---
+
+## 🚀 Overview
+
+The system retrieves and answers queries through three key stages:
+
+1. **Scraping:** Collects product and career data from KDD’s official sources.  
+2. **Embedding + FAISS:** Converts data into vector representations for semantic search.  
+3. **RAG Pipeline:** Uses a lightweight model (`microsoft/phi-3-mini-4k-instruct`) to produce final, human-like responses.
+
+The backend runs on **FastAPI**, featuring both REST endpoints and an interactive browser-based UI.
+
+---
+
+## 📂 Project Structure
+
+```
+
+KDD PROJECT/
+│
+├── data/
+│   ├── clean/
+│   │   ├── careers1_clean.json
+│   │   ├── products_clean.json
+│   ├── embed/                   
+│   ├── index/
+│   │   ├── faiss.index
+│   │   ├── conf.json
+│   │   ├── meta.json
+│   ├── careers.json
+│   ├── corpus.json
+│   ├── products_ice_cream_detailed.json
+│   ├── products_juices_detailed.json
+│
+├── static/
+│   ├── kdd_logo.png
+│   ├── style.css
+│   ├── tools.js
+│   ├── ui.js
+│
+├── templates/
+│   ├── tools.html
+│   ├── ui.html
+│
+├── build_faiss.py
+├── Careers_scraper.py
+├── Products_Scraping.py
+├── clean_and_build_corpus.py
+├── make_embeddings.py
+├── rag_api.py
+├── requirements.txt
+├── requirements_all.txt
+└── README.md
+
+````
+
+---
+
+## ⚙️ Installation
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/yourusername/KDD-RAG.git
+cd KDD-RAG
+````
+
+### 2. Create and Activate a Virtual Environment
+
+```bash
+python -m venv venv
+source venv/bin/activate     # macOS/Linux
+venv\Scripts\activate        # Windows
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 💾 Running the Project
+
+### Step 1: Scrape Product and Career Data
+
+```bash
+python Products_Scraping.py
+python Careers_scraper.py
+```
+
+### Step 2: Clean and Build the Corpus
+
+```bash
+python clean_and_build_corpus.py
+```
+
+### Step 3: Generate Embeddings
+
+```bash
+python make_embeddings.py
+```
+
+### Step 4: Build and Test the FAISS Index
+
+To build the index:
+
+```bash
+python build_faiss.py build
+```
+
+To perform a quick search test:
+
+```bash
+python build_faiss.py search "your query here"
+```
+
+### Step 5: Run the FastAPI Server
+
+```bash
+uvicorn rag_api:app --reload
+```
+
+Then open your browser at:
+
+```
+http://127.0.0.1:8000/ui
+```
+
+---
+
+## 📡 API Endpoints
+
+| Endpoint       | Description                             |
+| -------------- | --------------------------------------- |
+| `/v1/products` | Retrieve all KDD products               |
+| `/v1/careers`  | Retrieve all career entries             |
+| `/v1/search`   | Perform FAISS-based semantic search     |
+| `/v1/ask`      | Full RAG query (retrieval + generation) |
+| `/ui`          | Chat-style web interface                |
+| `/docs`        | FastAPI Swagger API documentation       |
+
+---
+
+## 📚 Documentation
+
+### 1. Scraping Methodology and Challenges
+
+#### Product Scraping
+
+* Implemented using **Requests** and **BeautifulSoup**.
+* Extracts product name, size, flavor, ingredients, and price.
+* Handles multiple product categories (ice cream, juices, dairy).
+* Saves structured results to JSON for consistency.
+
+#### Careers Scraping
+
+* Uses **Requests** and **Selenium** to handle dynamically rendered job pages.
+* Extracts fields such as title, department, location, and required skills.
+* Handles multiple layouts and localized (Arabic/English) text.
+* Cleans and merges data for use in embeddings.
+
+#### Key Challenges
+
+| Challenge                  | Solution                                             |
+| -------------------------- | ---------------------------------------------------- |
+| Dynamic JavaScript content | Used Selenium headless Chrome to render and extract. |
+| Inconsistent structure     | Implemented multi-selector logic with fallbacks.     |
+| Timeouts / rate limits     | Added retry logic and random request delays.         |
+| Duplicates                 | Removed using SHA-1 hashing on job titles and URLs.  |
+| Encoding issues            | Normalized all data to UTF-8 before processing.      |
+
+---
+
+### 2. Architecture of the RAG Pipeline
+
+The **Retrieval-Augmented Generation (RAG)** system integrates both retrieval and generative reasoning for context-aware answers.
+
+#### Pipeline Overview
+
+1. **Data Preparation:** Cleans and merges scraped JSON files into a single corpus (`corpus.json`).
+2. **Embeddings:** Uses `BAAI/bge-small-en-v1.5` to generate dense semantic embeddings.
+3. **FAISS Indexing:** Stores embeddings in a FAISS index for cosine similarity search.
+4. **Retrieval:** The user query is embedded and matched against the FAISS index.
+5. **Generation:** The retrieved context is passed to `microsoft/phi-3-mini-4k-instruct` to generate a clear response.
+6. **FastAPI Layer:** All components are served through `/v1/ask` and `/ui`.
+
+#### Flow Diagram
+
+```
+Scraped Data → Clean Corpus → Embeddings → FAISS Index → Query → Retrieve → Generate Answer
+```
+
+---
+
+### 3. Model Selection Criteria
+
+| Component           | Model                              | Reason                                                  |
+| ------------------- | ---------------------------------- | ------------------------------------------------------- |
+| **Embedding Model** | `BAAI/bge-small-en-v1.5`           | Accurate and efficient for English semantic retrieval.  |
+| **Vector Indexing** | FAISS                              | Fast, scalable, and supports local GPU acceleration.    |
+| **Language Model**  | `microsoft/phi-3-mini-4k-instruct` | Small, fast, and instruction-tuned for reasoning tasks. |
+| **Alternative**     | `BAAI/bge-m3`                      | Optional multilingual embeddings for Arabic support.    |
+
+---
+
+## 🧩 Key Features
+
+* Full pipeline: Scraping → Cleaning → Embedding → FAISS → RAG.
+* Semantic search powered by FAISS.
+* FastAPI backend with modern UI.
+* Lightweight, local-first design (no external APIs required).
+* Modular codebase with clear comments and structure.
+
+---
+
+## 🧠 Future Enhancements
+
+* Add multilingual embedding support for Arabic queries.
+* Integrate result scoring for improved ranking.
+* Deploy on cloud (AWS, Render, or Hugging Face Spaces).
+* Add user feedback loops for improving model accuracy.
+
+---
+
+## ✍️ Author
+
+**Bushra Dajam**
+AI Engineer | Data & NLP Enthusiast
+University of Jeddah – Artificial Intelligence Major
+📧 Email: [[your-email@example.com](mailto:your-email@example.com)]
+🌐 GitHub: [github.com/yourusername]
+💼 LinkedIn: [linkedin.com/in/bushradajam]
+
+---
+
+## 🪪 License
+
+This project is licensed under the **MIT License** — feel free to use, modify, and distribute with attribution.
+
+```
