@@ -1,0 +1,31 @@
+# Core runtime
+fastapi
+uvicorn[standard]
+pydantic
+
+# Scrapers / HTTP / parsing
+requests
+beautifulsoup4
+lxml
+urllib3
+tqdm
+selenium
+webdriver-manager
+
+# Notebook/kernel
+ipykernel
+
+# Data science / RAG
+numpy
+sentence-transformers
+transformers
+torch
+
+# Vector index (choose platform-appropriate wheel)
+# Prefer faiss-cpu for CPU-only environments. On many systems use:
+#   pip install faiss-cpu
+# If you have CUDA and want GPU support, install faiss-cuda via conda or a matching wheel.
+faiss-cpu
+
+# Optional / debugging
+python-multipart  # used by some FastAPI file uploads if needed

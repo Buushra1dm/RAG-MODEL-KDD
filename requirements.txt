@@ -1,0 +1,54 @@
+# Requirements for KDD PROJECT
+# Core HTTP / scraping
+requests
+beautifulsoup4
+lxml
+tqdm
+selenium
+webdriver-manager
+
+# Web / API
+fastapi
+uvicorn[standard]
+
+# Data / ML
+numpy
+torch
+transformers
+sentence-transformers
+faiss-cpu
+
+# Pydantic settings
+pydantic
+pydantic-settings
+
+# Optional / acceleration (install only if you need GPU / bnb)
+bitsandbytes
+huggingface_hub
+
+# Jupyter / tooling
+ipykernel
+
+# Notes:
+# - On Windows, installing `faiss-cpu` via pip may be difficult; consider
+#   using conda or a platform-specific wheel for FAISS.
+# - Install only the optional GPU packages (torch, bitsandbytes) if you have
+#   compatible CUDA hardware and drivers. Adjust versions to match your CUDA.
+requests
+beautifulsoup4
+lxml
+tqdm
+selenium
+webdriver-manager
+urllib3
+ipykernel
+
+
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+sentence-transformers
+faiss-cpu
+numpy
+requests

@@ -1,0 +1,1 @@
+{"search_space": "cosine", "from_conf": {"model_name": "BAAI/bge-small-en-v1.5", "normalized": true, "device": "cuda", "batch_size": 128}, "built_with": {"index": "IndexFlatIP"}}

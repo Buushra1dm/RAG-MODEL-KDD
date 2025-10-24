@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <!-- Make layout responsive on mobile -->
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>KDD Smart Assistant</title>
+
+  <!-- Favicon and main stylesheet -->
+  <link rel="icon" href="/static/kdd_logo.png">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- =========================
+       App Header / Branding
+       ========================= -->
+  <header>
+    <div class="brand">
+      <!-- Decorative logo (hidden from screen readers with aria-label) -->
+      <div class="logo" aria-label="KDD logo"></div>
+      <h1>KDD Smart Assistant</h1>
+    </div>
+
+    <!-- Flexible spacer to push link to the far right -->
+    <div class="spacer"></div>
+
+    <!-- Link to the tools UI (products/careers/semantic testers) -->
+    <a class="tools-link" href="/ui/tools" title="Open tools">Tools ▸</a>
+  </header>
+
+  <!-- =========================
+       Main Card
+       ========================= -->
+  <div class="wrap">
+    <div class="card">
+      <h2>Welcome</h2>
+      <div class="hint">
+        <!-- Short guidance about the domain of the assistant -->
+        Ask anything about KDD products or careers. Answers are verified from company data.
+      </div>
+
+      <!-- Quick example prompts (fill the input on click) -->
+      <div class="examples">
+        <button class="example" onclick="fill('What products are available right now?')">
+          What products are available right now?
+        </button>
+        <button class="example" onclick="fill('Which jobs require SQL?')">
+          Which jobs require SQL?
+        </button>
+        <button class="example" onclick="fill('Ice cream flavors under 1 KWD')">
+          Ice cream flavors under 1 KWD
+        </button>
+      </div>
+
+      <!-- Chat transcript container (messages appended via JS) -->
+      <div class="chat" id="chat"></div>
+
+      <!-- Query row: input, k selector, and Ask button -->
+      <div class="row">
+        <!-- Main query input
+             Tip: Enter submits (handled in JS), Shift+Enter creates a new line -->
+        <input id="a_q" placeholder="Ask a question… (Press Enter to send, Shift+Enter for new line)"/>
+
+        <!-- Top-k results selector (passed to the API) -->
+        <select id="a_k">
+          <option value="3" selected>k=3</option>
+          <option value="5">k=5</option>
+          <option value="8">k=8</option>
+        </select>
+
+        <!-- Triggers the ask() handler in /static/ui.js -->
+        <button id="ask_btn" onclick="ask()">Ask</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main client script that wires the chat and calls /v1/ask -->
+  <script src="/static/ui.js"></script>
+</body>
+</html>

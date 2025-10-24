@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <!-- Make layout responsive across mobile and desktop -->
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>KDD Tools</title>
+
+  <!-- Favicon and stylesheet -->
+  <link rel="icon" href="/static/kdd_logo.png">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+  <!-- =========================
+       Header / Navigation Bar
+       ========================= -->
+  <header>
+    <div class="brand">
+      <!-- KDD logo and title -->
+      <div class="logo" aria-label="KDD logo"></div>
+      <h1>KDD Tools</h1>
+    </div>
+
+    <!-- Spacer pushes link to the right -->
+    <div class="spacer"></div>
+
+    <!-- Back navigation link to main assistant UI -->
+    <a class="tools-link" href="/ui" title="Back to Assistant">◂ Back to Assistant</a>
+  </header>
+
+  <!-- =========================
+       Main Tools Container
+       ========================= -->
+  <div class="wrap">
+
+    <!-- =========================
+         Products Section
+         ========================= -->
+    <section class="section">
+      <h2>KDD Products Finder</h2>
+      <div class="hint">
+        Search and explore KDD products by name, brand, flavor, or price range.
+      </div>
+
+      <!-- Filter row for product search -->
+      <div class="row">
+        <!-- Search input fields -->
+        <input id="p_q" placeholder="Search by name, brand, or flavor"/>
+        <input id="p_cat" placeholder="Category"/>
+        <input id="p_price_min" placeholder="Min price (KWD)" style="max-width:150px"/>
+        <input id="p_price_max" placeholder="Max price (KWD)" style="max-width:150px"/>
+
+        <!-- Triggers loadProducts() in tools.js -->
+        <button id="p_btn" onclick="loadProducts()">Explore Products</button>
+      </div>
+
+      <!-- Dynamic grid container for results -->
+      <div id="p_res" class="grid"></div>
+    </section>
+
+    <!-- =========================
+         Careers Section
+         ========================= -->
+    <section class="section">
+      <h2>KDD Career Opportunities</h2>
+      <div class="hint">
+        Find open positions by job title, department, or location.
+      </div>
+
+      <!-- Filter row for career search -->
+      <div class="row">
+        <input id="c_q" placeholder="Search by job title, department, or skills"/>
+        <input id="c_dep" placeholder="Department"/>
+        <input id="c_loc" placeholder="Location"/>
+
+        <!-- Triggers loadCareers() in tools.js -->
+        <button id="c_btn" onclick="loadCareers()">Find Jobs</button>
+      </div>
+
+      <!-- Dynamic grid for job results -->
+      <div id="c_res" class="grid"></div>
+    </section>
+
+    <!-- =========================
+         Semantic Search Section
+         ========================= -->
+    <section class="section">
+      <h2>Smart Knowledge Search</h2>
+      <div class="hint">
+        Ask natural-language questions about KDD products or careers.
+      </div>
+
+      <!-- Query row for semantic FAISS search -->
+      <div class="row">
+        <input id="s_q" placeholder="Ask your question..."/>
+
+        <!-- k selector for number of top results -->
+        <select id="s_k">
+          <option value="3" selected>k=3</option>
+          <option value="5">k=5</option>
+          <option value="8">k=8</option>
+        </select>
+
+        <!-- Triggers doSemantic() in tools.js -->
+        <button id="s_btn" onclick="doSemantic()">Search</button>
+      </div>
+
+      <!-- Dynamic grid showing semantic search hits -->
+      <div id="s_res" class="grid"></div>
+    </section>
+
+  </div>
+
+  <!-- =========================
+       Scripts
+       ========================= -->
+  <!-- Loads the client-side logic for product, career, and semantic search -->
+  <script src="/static/tools.js"></script>
+</body>
+</html>

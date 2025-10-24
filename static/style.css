@@ -1,0 +1,241 @@
+/* Define the color palette and main theme variables */
+:root{
+  --kdd-red:#D9473A;        /* Main KDD red */
+  --kdd-red-600:#BF3026;    /* Darker hover red */
+  --kdd-red-700:#A4251D;    /* Deep red tone */
+  --kdd-rose:#FF7A6E;       /* Soft rose tint */
+  --bg:#ffffff;             /* Page background */
+  --panel:#ffffff;          /* Card background */
+  --text:#1f2937;           /* Main text color */
+  --muted:#6b7280;          /* Subtext / secondary text */
+  --border:#e5e7eb;         /* Soft border color */
+  --ring: rgba(217,71,58,.25); /* Focus ring color */
+  --user-bg:#f3f4f6;        /* Background for user messages */
+  --assistant-bg:#fff1f0;   /* Background for assistant messages */
+}
+
+/* Global layout and typography */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: system-ui, Segoe UI, Roboto, Tahoma, Arial, sans-serif;
+  color:var(--text);
+  background:var(--bg);
+}
+
+/* =========================
+   Header
+   ========================= */
+/* Sticky top navigation bar with gradient and logo */
+header{
+  position:sticky; top:0; z-index:10;
+  display:flex; align-items:center; gap:12px;
+  padding:12px 16px;
+  background: linear-gradient(90deg, var(--kdd-red-700), var(--kdd-red), var(--kdd-rose));
+  border-bottom: 1px solid rgba(0,0,0,.06);
+  box-shadow: 0 4px 18px rgba(164,37,29,.18);
+}
+header .brand{display:flex; align-items:center; gap:10px}
+header h1{
+  margin:0; font-size:18px; font-weight:700; letter-spacing:.2px;
+  color:#fff; text-shadow:0 1px 0 rgba(0,0,0,.15);
+}
+header .logo{
+  width:56px; height:32px; flex:0 0 56px;
+  background-image:url("/static/kdd_logo.png");
+  background-repeat:no-repeat; background-position:center; background-size:contain;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.35));
+}
+/* Navigation links inside header */
+header a{
+  color:#fff; text-decoration:none; font-weight:600; padding:6px 10px;
+  border-radius:10px; transition:transform .08s ease, background .2s ease;
+}
+header a:hover{ background:rgba(255,255,255,.15); transform: translateY(-1px) }
+
+/* =========================
+   Layout & Cards
+   ========================= */
+/* Page container and card components */
+.wrap{max-width:1000px; margin:22px auto; padding:0 16px}
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.05);
+}
+h2{margin:6px 0 10px 0; font-size:20px}
+.hint{color:var(--muted); font-size:14px; margin-bottom:14px}
+
+/* =========================
+   Example Chips
+   ========================= */
+/* Small rounded “example question” buttons */
+.examples{display:flex; flex-wrap:wrap; gap:10px; margin:10px 0 14px}
+.example{
+  border:1px solid var(--border);
+  background:#fff;
+  padding:10px 12px; border-radius:999px;
+  cursor:pointer; font-size:13px;
+  transition: box-shadow .15s ease, border-color .15s ease, transform .05s ease;
+}
+.example:hover{
+  border-color: var(--kdd-red);
+  box-shadow: 0 0 0 4px var(--ring);
+  transform: translateY(-1px);
+}
+
+/* =========================
+   Chat Section with Bubbles
+   ========================= */
+/* Chat layout container */
+.chat{
+  display:flex; flex-direction:column; gap:10px;
+  min-height:150px;
+  border:1px dashed var(--border);
+  border-radius:14px;
+  padding:16px;
+  background:#fafafa;
+}
+
+/* Generic message bubble */
+.msg{
+  max-width:80%;
+  padding:12px 16px;
+  border-radius:18px;
+  line-height:1.5;
+  font-size:14px;
+  color:#1f2937;
+  box-shadow:0 3px 8px rgba(0,0,0,.06);
+  word-wrap:break-word;
+  animation:fadeIn .25s ease;
+  transition:transform .15s ease;
+}
+.msg:hover{ transform:scale(1.02); }
+
+/* User message bubble (right side) */
+.msg.user{
+  align-self:flex-end;
+  border-top-right-radius:6px;
+  background:var(--user-bg);
+  border:1px solid var(--border);
+  position:relative;
+}
+.msg.user::after{
+  content:"";
+  position:absolute;
+  right:-8px; top:10px;
+  border-left:8px solid var(--user-bg);
+  border-top:6px solid transparent;
+  border-bottom:6px solid transparent;
+}
+
+/* Assistant message bubble (left side) */
+.msg.assistant{
+  align-self:flex-start;
+  border-top-left-radius:6px;
+  position:relative;
+  border:1px solid rgba(0,0,0,.08);
+}
+.msg.assistant::after{
+  content:"";
+  position:absolute;
+  left:-8px; top:10px;
+  border-right:8px solid currentColor;
+  border-top:6px solid transparent;
+  border-bottom:6px solid transparent;
+}
+
+/* Alternating background colors for visual variation */
+.msg.assistant:nth-child(4n+1){background:#fff1f0;}
+.msg.assistant:nth-child(4n+2){background:#ffe8e4;}
+.msg.assistant:nth-child(4n+3){background:#ffdeda;}
+.msg.assistant:nth-child(4n+4){background:#fff5f2;}
+.msg.user:nth-child(4n+1){background:#f3f4f6;}
+.msg.user:nth-child(4n+2){background:#f8fafc;}
+.msg.user:nth-child(4n+3){background:#f5f6f7;}
+.msg.user:nth-child(4n+4){background:#f0f2f4;}
+
+/* Add icons before each message bubble */
+.msg.user::before{content:"👤"; font-size:13px; margin-right:6px; opacity:.7;}
+.msg.assistant::before{content:"🤖"; font-size:13px; margin-right:6px; opacity:.7;}
+
+/* Smooth fade-in animation for new messages */
+@keyframes fadeIn {from {opacity:0; transform:translateY(5px);} to {opacity:1; transform:translateY(0);}}
+
+/* =========================
+   Inputs & Ask Button
+   ========================= */
+/* Query input and “Ask” button row */
+.row{display:flex; gap:10px; align-items:center; margin-top:12px}
+.row input{
+  flex:1; height:46px; padding:0 16px; border-radius:999px;
+  border:1px solid var(--border);
+  background:#fff; color:var(--text); font-size:14px;
+  outline:none; transition: box-shadow .15s ease, border-color .15s ease;
+}
+.row input:focus{border-color:var(--kdd-red); box-shadow:0 0 0 4px var(--ring)}
+
+#ask_btn{
+  height:46px; padding:0 18px; border:0; border-radius:12px;
+  background:var(--kdd-red); color:#fff; font-weight:700;
+  cursor:pointer; box-shadow:0 6px 14px rgba(217,71,58,.28);
+  transition:transform .06s ease, background .15s ease, box-shadow .15s ease;
+}
+#ask_btn:hover{ background:var(--kdd-red-600); transform:translateY(-1px); box-shadow:0 8px 18px rgba(164,37,29,.35) }
+
+/* =========================
+   Tools Page / Buttons / Grid
+   ========================= */
+/* Card-like sections used in tools.html */
+.section {
+  margin-bottom: 40px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 16px rgba(0,0,0,.05);
+}
+.section h2 { color: var(--kdd-red); margin-top:0; }
+
+/* Responsive grid layout for product/career cards */
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(260px,1fr));
+  gap:14px;
+  margin-top:16px;
+}
+.card .title { font-weight:700; color:var(--text); font-size:15px; margin-bottom:4px; }
+.card .meta { font-size:13px; color:var(--muted); }
+.card .price strong { color:var(--kdd-red) }
+
+/* Styled KDD buttons */
+.btn, #p_btn, #c_btn, #s_btn {
+  height: 46px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--kdd-red);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(217,71,58,.28);
+  transition: transform .08s ease, background .15s ease, box-shadow .15s ease;
+}
+.btn:hover, #p_btn:hover, #c_btn:hover, #s_btn:hover {
+  background: var(--kdd-red-600);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(164,37,29,.35);
+}
+
+/* =========================
+   Responsive
+   ========================= */
+/* Adjust layout for small screens */
+@media (max-width:600px){
+  header h1{font-size:16px}
+  header .logo{width:50px;height:28px}
+  .row{flex-wrap:wrap}
+}
