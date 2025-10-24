@@ -1,5 +1,3 @@
-
-```markdown
 # 🧠 KDD RAG Project
 
 This project implements a **Retrieval-Augmented Generation (RAG)** pipeline for **KDD Kuwait**, allowing users to ask natural questions about products and career opportunities.  
