@@ -1,22 +1,26 @@
 # Requirements for KDD PROJECT
-# Core HTTP / scraping
 requests
 beautifulsoup4
 lxml
 tqdm
 selenium
 webdriver-manager
-
-# Web / API
+pandas
 fastapi
 uvicorn[standard]
-
-# Data / ML
+orjson
 numpy
 torch
+urllib3
 transformers
 sentence-transformers
 faiss-cpu
+hf_xet
+torchvision
+torchaudio
+transformers
+accelerate
+bitsandbytes  # optional for 4bit quantization
 
 # Pydantic settings
 pydantic
@@ -34,55 +38,21 @@ ipykernel
 #   using conda or a platform-specific wheel for FAISS.
 # - Install only the optional GPU packages (torch, bitsandbytes) if you have
 #   compatible CUDA hardware and drivers. Adjust versions to match your CUDA.
-requests
-beautifulsoup4
-lxml
-tqdm
-selenium
-webdriver-manager
-urllib3
-ipykernel
 
 
-fastapi
-uvicorn
-pydantic
-pydantic-settings
-sentence-transformers
-faiss-cpu
-numpy
-requests
-
-
-
-# Core runtime
-fastapi
-uvicorn[standard]
-pydantic
-
-# Scrapers / HTTP / parsing
-requests
-beautifulsoup4
-lxml
-urllib3
-tqdm
-selenium
-webdriver-manager
-
-# Notebook/kernel
-ipykernel
-
-# Data science / RAG
-numpy
-sentence-transformers
-transformers
-torch
 
 # Vector index (choose platform-appropriate wheel)
 # Prefer faiss-cpu for CPU-only environments. On many systems use:
 #   pip install faiss-cpu
 # If you have CUDA and want GPU support, install faiss-cuda via conda or a matching wheel.
 faiss-cpu
+
+# For CUDA 12.1
+--index-url https://download.pytorch.org/whl/cu121
+torch
+torchvision
+torchaudio
+
 
 # Optional / debugging
 python-multipart  # used by some FastAPI file uploads if needed
