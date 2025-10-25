@@ -187,7 +187,7 @@ The **Retrieval-Augmented Generation (RAG)** pipeline integrates semantic retrie
 Scraped Data → Clean Corpus → Embeddings → FAISS Index → Retrieve → Rerank → Generate Answer → Display in UI
 ```
 
-<img width="1000" height="1000" alt="rag" src="https://github.com/user-attachments/assets/ca04ddef-253c-4350-a64f-626be3efc151" />
+<img width="500" height="500" alt="rag" src="https://github.com/user-attachments/assets/ca04ddef-253c-4350-a64f-626be3efc151" />
 
 ---
 
@@ -251,9 +251,9 @@ The assistant retrieved relevant jobs from the KDD Careers dataset and generated
 
 ---
 
-##  Future Work & Enhancements
+##  Future Work 
 
-- ** Multi-Language Support**
-- ** Knowledge Expansion**
-- ** Hybrid Query Understanding**
+- **Multi-Language Support**
+- **Knowledge Expansion**
+- **Hybrid Query Understanding**
 ---
