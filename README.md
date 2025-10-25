@@ -222,9 +222,6 @@ The assistant retrieved relevant jobs from the KDD Careers dataset and generated
 
 ---
 
-
----
-
 ## ⚙️ Tech Stack
 
 | Component | Technology |
@@ -249,6 +246,10 @@ The assistant retrieved relevant jobs from the KDD Careers dataset and generated
 - **Interactive Web Interface**
 
 
+---
+> ⚠️ **Note:**  
+> The model may take several minutes to load during the first run, especially if it needs to download weights or initialize from disk.  
+> If you have a GPU available, the system will automatically use it to accelerate embedding and generation processes.
 ---
 
 ##  Future Work 
