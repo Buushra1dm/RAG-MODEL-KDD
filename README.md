@@ -222,7 +222,7 @@ The assistant retrieved relevant jobs from the KDD Careers dataset and generated
 
 ---
 
-## ⚙️ Tech Stack
+##  Tech Stack
 
 | Component | Technology |
 |------------|-------------|
