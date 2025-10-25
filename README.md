@@ -153,6 +153,60 @@ http://127.0.0.1:8000/ui
 
 ---
 
+
+##  Architecture of the RAG Pipeline
+
+The **Retrieval-Augmented Generation (RAG)** pipeline integrates semantic retrieval, reranking, and contextual generation to provide domain-grounded answers about KDD products and career opportunities.
+
+### Pipeline Overview
+
+1. **Data Preparation:**
+   Scrapes and cleans product and career information from KDD’s official websites, then merges both datasets into a unified structured corpus.
+
+2. **Embeddings:**
+   Uses `BAAI/bge-small-en-v1.5` to generate dense semantic embeddings that capture meaning beyond simple keywords.
+
+3. **FAISS Indexing:**
+   Stores the embeddings inside a FAISS `IndexFlatIP` structure for efficient cosine-similarity search across thousands of records.
+
+4. **Retrieval:**
+   When a user submits a query, it is embedded and compared against the FAISS index to identify semantically similar documents.
+
+5. **Reranking:**
+   The top retrieved results are passed to `BAAI/bge-reranker-large`, which cross-encodes and re-evaluates query–document relevance for maximum precision.
+
+6. **Generation:**
+   The refined context is used as input for `Qwen/Qwen2.5-1.5B-Instruct`, which generates a clear, concise, and fact-based answer derived only from verified KDD data.
+
+7. **FastAPI Layer:**
+   All operations are served through RESTful endpoints with a user-friendly web interface.
+
+---
+
+### Flow Diagram
+
+```
+Scraped Data → Clean Corpus → Embeddings → FAISS Index → Retrieve → Rerank → Generate Answer → Display in UI
+```
+
+<img width="1024" height="1024" alt="rag" src="https://github.com/user-attachments/assets/ca04ddef-253c-4350-a64f-626be3efc151" />
+
+
+---
+
+## ⚙️ Tech Stack
+
+| Component | Technology |
+|------------|-------------|
+| Backend | FastAPI |
+| Web Scraping | Requests, BeautifulSoup, Selenium |
+| Embeddings | `BAAI/bge-small-en-v1.5` |
+| Reranker | `BAAI/bge-reranker-large` |
+| Generator | `Qwen/Qwen2.5-1.5B-Instruct` |
+| Vector Database | FAISS |
+| Language | Python 3.11 |
+| Frontend | HTML, CSS, JavaScript |
+
 ---
 
 ## 📚 Documentation
@@ -274,135 +328,6 @@ The backend runs on **FastAPI**, featuring both REST endpoints and an interactiv
 
 ---
 
-## 📂 Project Structure
-
-```
-
-KDD PROJECT/
-│
-├── data/
-│   ├── clean/
-│   │   ├── careers1_clean.json
-│   │   ├── products_clean.json
-│   ├── embed/                   
-│   ├── index/
-│   │   ├── faiss.index
-│   │   ├── conf.json
-│   │   ├── meta.json
-│   ├── careers.json
-│   ├── corpus.json
-│   ├── products_ice_cream_detailed.json
-│   ├── products_juices_detailed.json
-│
-├── static/
-│   ├── kdd_logo.png
-│   ├── style.css
-│   ├── tools.js
-│   ├── ui.js
-│
-├── templates/
-│   ├── tools.html
-│   ├── ui.html
-│
-├── build_faiss.py
-├── Careers_scraper.py
-├── Products_Scraping.py
-├── clean_and_build_corpus.py
-├── make_embeddings.py
-├── rag_api.py
-├── requirements.txt
-├── requirements_all.txt
-└── README.md
-
-````
-
----
-
-## ⚙️ Installation
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/yourusername/KDD-RAG.git
-cd KDD-RAG
-````
-
-### 2. Create and Activate a Virtual Environment
-
-```bash
-python -m venv venv
-source venv/bin/activate     # macOS/Linux
-venv\Scripts\activate        # Windows
-```
-
-### 3. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## 💾 Running the Project
-
-### Step 1: Scrape Product and Career Data
-
-```bash
-python Products_Scraping.py
-python Careers_scraper.py
-```
-
-### Step 2: Clean and Build the Corpus
-
-```bash
-python clean_and_build_corpus.py
-```
-
-### Step 3: Generate Embeddings
-
-```bash
-python make_embeddings.py
-```
-
-### Step 4: Build and Test the FAISS Index
-
-To build the index:
-
-```bash
-python build_faiss.py build
-```
-
-To perform a quick search test:
-
-```bash
-python build_faiss.py search "your query here"
-```
-
-### Step 5: Run the FastAPI Server
-
-```bash
-uvicorn rag_api:app --reload
-```
-
-Then open your browser at:
-
-```
-http://127.0.0.1:8000/ui
-```
-
----
-
-## 📡 API Endpoints
-
-| Endpoint       | Description                             |
-| -------------- | --------------------------------------- |
-| `/v1/products` | Retrieve all KDD products               |
-| `/v1/careers`  | Retrieve all career entries             |
-| `/v1/search`   | Perform FAISS-based semantic search     |
-| `/v1/ask`      | Full RAG query (retrieval + generation) |
-| `/ui`          | Chat-style web interface                |
-| `/docs`        | FastAPI Swagger API documentation       |
-
----
 
 ## 📚 Documentation
 
