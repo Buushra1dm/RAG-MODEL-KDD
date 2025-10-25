@@ -55,7 +55,6 @@ KDD PROJECT/
 ├── make_embeddings.py
 ├── rag_api.py
 ├── requirements.txt
-├── requirements_all.txt
 └── README.md
 
 ````
