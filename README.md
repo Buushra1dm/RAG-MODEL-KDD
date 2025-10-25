@@ -1,19 +1,20 @@
-# 🧠 KDD RAG Project
+# KDD RAG Project
 
-This project implements a **Retrieval-Augmented Generation (RAG)** pipeline for **KDD Kuwait**, allowing users to ask natural questions about products and career opportunities.  
-It combines **web scraping**, **data cleaning**, **semantic search (FAISS)**, and a **local language model** to generate accurate, context-aware answers.
+
+A Retrieval-Augmented Generation **(RAG)** system that provides natural-language answers about KDD (Kuwait Danish Dairy Company) products and career opportunities.  
+Built with FastAPI, this project integrates web scraping, semantic search (FAISS), and LLMs to deliver grounded, domain-specific responses.
 
 ---
 
-## 🚀 Overview
+## 🍦 Overview
 
-The system retrieves and answers user queries by integrating three main components:
+The KDD RAG Pipeline transforms KDD’s product and career data into an interactive knowledge system.  
+Users can ask questions like:
 
-1. **Scraping:** Automatically collects product and career data from KDD’s official websites.  
-2. **Embedding + FAISS:** Converts text into vector embeddings and builds a FAISS index for semantic search.  
-3. **RAG API:** Uses a lightweight local model (`microsoft/phi-3-mini-4k-instruct`) to generate natural, human-like responses.
+> “What ice cream flavors are available under 1 KWD?”  
+> “Are there any open Python skills positions?”
 
-The backend is built using **FastAPI**, offering both **REST endpoints** and an interactive **web interface**.
+The system retrieves KDD data, ranks the most relevant information, and generates clear, factual answers — all locally and without cloud dependencies.
 
 ---
 
@@ -21,32 +22,41 @@ The backend is built using **FastAPI**, offering both **REST endpoints** and an 
 
 ```
 
-KDD-RAG/
+KDD PROJECT/
 │
 ├── data/
+│   ├── clean/
+│   │   ├── careers1_clean.json
+│   │   ├── products_clean.json
+│   ├── embed/                   
+│   ├── index/
+│   │   ├── faiss.index
+│   │   ├── conf.json
+│   │   ├── meta.json
+│   ├── careers.json
+│   ├── corpus.json
 │   ├── products_ice_cream_detailed.json
 │   ├── products_juices_detailed.json
-│   ├── careers.json
-│   ├── clean/
-│   │   ├── products_clean.json
-│   │   ├── careers1_clean.json
-│   │   ├── corpus.json
-│   └── index/
-│       ├── faiss.index
-│       ├── meta.json
-│       ├── conf.json
 │
-├── scripts/
-│   ├── kdd_scraper.py              # Product scraper
-│   ├── kdd_careers_scraper.py      # Careers scraper (Selenium)
-│   ├── clean_data.py               # Cleans and merges raw data
-│   ├── make_embeddings.py          # Generates embeddings
-│   ├── build_faiss.py              # Builds FAISS index
+├── static/
+│   ├── kdd_logo.png
+│   ├── style.css
+│   ├── tools.js
+│   ├── ui.js
 │
-├── rag_api.py                      # FastAPI app (RAG endpoints)
+├── templates/
+│   ├── tools.html
+│   ├── ui.html
+│
+├── build_faiss.py
+├── Careers_scraper.py
+├── Products_Scraping.py
+├── clean_and_build_corpus.py
+├── make_embeddings.py
+├── rag_api.py
 ├── requirements.txt
-├── README.md
-└── .env
+├── requirements_all.txt
+└── README.md
 
 ````
 
@@ -56,16 +66,16 @@ KDD-RAG/
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/KDD-RAG.git
+git clone https://github.com/Buushra1dm/RAG-MODEL-KDD.git
 cd KDD-RAG
 ````
 
-### 2. Create a Virtual Environment
+### 2. Create and Activate a Virtual Environment
 
 ```bash
 python -m venv venv
-source venv/bin/activate     # On macOS/Linux
-venv\Scripts\activate        # On Windows
+source venv/bin/activate     # macOS/Linux
+venv\Scripts\activate        # Windows
 ```
 
 ### 3. Install Dependencies
@@ -78,19 +88,17 @@ pip install -r requirements.txt
 
 ## 💾 Running the Project
 
-### Step 1: Scrape the Data
-
-Run both scrapers to collect the raw product and career data:
+### Step 1: Scrape Product and Career Data
 
 ```bash
-python kdd_scraper.py
-python kdd_careers_scraper.py
+python Products_Scraping.py
+python Careers_scraper.py
 ```
 
-### Step 2: Clean and Merge the Data
+### Step 2: Clean and Build the Corpus
 
 ```bash
-python clean_data.py
+python clean_and_build_corpus.py
 ```
 
 ### Step 3: Generate Embeddings
@@ -99,19 +107,33 @@ python clean_data.py
 python make_embeddings.py
 ```
 
-### Step 4: Build the FAISS Index
+### Step 4: Build and Test the FAISS Index
+
+To build the index:
 
 ```bash
 python build_faiss.py build
 ```
 
-### Step 5: Run the FastAPI App
+To perform a quick search test:
+
+```bash
+python build_faiss.py search "your query here"
+```
+
+### Step 5: Run the FastAPI Server
 
 ```bash
 uvicorn rag_api:app --reload
 ```
 
-Once it’s running, open your browser and go to:
+or 
+
+```bash
+python rag_api.py
+```
+
+Then open your browser at:
 
 ```
 http://127.0.0.1:8000/ui
@@ -121,14 +143,15 @@ http://127.0.0.1:8000/ui
 
 ## 📡 API Endpoints
 
-| Endpoint       | Description                                    |
-| -------------- | ---------------------------------------------- |
-| `/v1/products` | Retrieve all product entries                   |
-| `/v1/careers`  | Retrieve all career entries                    |
-| `/v1/search`   | Perform semantic search using FAISS            |
-| `/v1/ask`      | Execute full RAG pipeline (query + generation) |
-| `/ui`          | Web interface                                  |
-| `/docs`        | FastAPI auto-generated documentation           |
+| Endpoint       | Description                             |
+| -------------- | --------------------------------------- |
+| `/v1/products` | Retrieve all KDD products               |
+| `/v1/careers`  | Retrieve all career entries             |
+| `/v1/search`   | Perform FAISS-based search              |
+| `/v1/ask`      | Full RAG query (retrieval + generation) |
+| `/ui`          | Chat-style web interface                |
+
+---
 
 ---
 
